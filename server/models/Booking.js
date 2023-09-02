@@ -6,6 +6,7 @@ const BookingSchema = new Schema(
     models: [{ type: Schema.Types.ObjectId, ref: "Model", required: true }],
     totalprice: { type: Number, required: true },
     text: String,
+    completed: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

@@ -12,7 +12,20 @@ const getAllBookings = asyncHandler(async (req, res) => {
   if (!bookings?.length) {
     return res.status(400).json({ message: "No bookings found" });
   }
-  res.json(bookings);
+
+  // Add username and model names to each booking before sending the response
+  // See Promise.all with map() here: https://youtu.be/4lqJBBEpjRE
+  // You could also do this with a for...of loop
+
+  const bookingsWithUser = await Promise.all(
+    bookings.map(async (booking) => {
+      const user = await User.findById(booking.user).lean().exec();
+      const models = await Model.find({ _id: { $in: booking.models } });
+      const modelNames = models.map((model) => model.name);
+      return { ...booking, username: user.username, models: modelNames };
+    })
+  );
+  res.json(bookingsWithUser);
 });
 
 // @desc    Create new booking
@@ -61,14 +74,15 @@ const createNewBooking = asyncHandler(async (req, res) => {
 // @route   PATCH /bookings
 // @access  Private/Admin/Model
 const updateBooking = asyncHandler(async (req, res) => {
-  const { id, user, models, totalprice, text } = req.body;
+  const { id, user, models, totalprice, text, completed } = req.body;
   if (
     !id ||
     !user ||
     !Array.isArray(models) ||
     !models.length ||
     !text ||
-    typeof totalprice !== "number"
+    typeof totalprice !== "number" ||
+    typeof completed !== "boolean"
   ) {
     return res.status(400).json({ message: "All fields are required" });
   }
@@ -82,6 +96,7 @@ const updateBooking = asyncHandler(async (req, res) => {
   booking.models = models;
   booking.text = text;
   booking.totalprice = totalprice;
+  booking.completed = completed;
 
   const updatedBooking = await booking.save();
   if (updatedBooking) {
