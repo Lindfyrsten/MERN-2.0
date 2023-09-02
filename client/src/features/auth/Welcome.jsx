@@ -19,7 +19,7 @@ const Welcome = () => {
         <Link to="/dash/bookings/new">Add New Booking</Link>
       </p>
       <p>
-        <Link to="/dash/users">View User Settings</Link>
+        <Link to="/dash/users">View Users</Link>
       </p>
       <p>
         <Link to="/dash/users/new">Add New User</Link>

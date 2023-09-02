@@ -13,7 +13,6 @@ import NewUserForm from "./features/users/NewUserForm";
 import EditBooking from "./features/bookings/EditBooking";
 import NewBooking from "./features/bookings/NewBooking";
 import Prefetch from "./features/auth/Prefetch";
-import "./App.css";
 
 function App() {
   return (
