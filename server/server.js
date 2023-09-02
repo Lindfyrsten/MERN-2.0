@@ -1,3 +1,4 @@
+import dotenv from "dotenv";
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -7,7 +8,12 @@ import errorHandler from "./middleware/errorHandler.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import corsOptions from "./config/corsOptions.js";
+import mongoose from "mongoose";
+import userRoutes from "./routes/userRoutes.js";
+import bookingRoutes from "./routes/bookingRoutes.js";
+import modelRoutes from "./routes/modelRoutes.js";
 
+dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -22,6 +28,10 @@ app.use(cors(corsOptions));
 app.use("/", express.static(path.join(__dirname, "public")));
 app.use("/", root);
 
+app.use("/users", userRoutes);
+app.use("/bookings", bookingRoutes);
+app.use("/models", modelRoutes);
+
 app.all("*", (req, res) => {
   res.status(404);
   if (req.accepts("html")) {
@@ -35,6 +45,17 @@ app.all("*", (req, res) => {
 
 app.use(errorHandler);
 
-app.listen(PORT, () => {
-  console.log(`Server is running on PORT ${PORT}`);
+await mongoose.connect(process.env.DATABASE_URI).then(() => {
+  console.log("Connected to database");
+  app.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT}`);
+  });
+});
+
+mongoose.connection.on("error", (error) => {
+  console.log(error);
+  logger.logEvents(
+    `${err.no}: ${err.code}\t${err.syscall}\t${err.hostname}`,
+    "mongoErrLog.log"
+  );
 });
