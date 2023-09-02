@@ -14,7 +14,6 @@ export const bookingsApiSlice = apiSlice.injectEndpoints({
       validateStatus: (response, result) => {
         return response.status === 200 && !result.isError;
       },
-      keepUnusedDataFor: 5, // keep unused data for 5 seconds - change to 60 in production
       transformResponse: (responseData) => {
         const loadedBookings = responseData.map((booking) => {
           booking.id = booking._id;
@@ -31,10 +30,47 @@ export const bookingsApiSlice = apiSlice.injectEndpoints({
         } else return [{ type: "booking", id: "LIST" }];
       },
     }),
+    addNewBooking: builder.mutation({
+      query: (initialBooking) => ({
+        url: "/bookings",
+        method: "POST",
+        body: {
+          ...initialBooking,
+        },
+      }),
+      invalidatesTags: [{ type: "Booking", id: "LIST" }],
+    }),
+    updateBooking: builder.mutation({
+      query: (initialBooking) => ({
+        url: "/bookings",
+        method: "PATCH",
+        body: {
+          ...initialBooking,
+        },
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: "Booking", id: arg.id },
+      ],
+    }),
+    deleteBooking: builder.mutation({
+      query: ({ id }) => ({
+        url: `/bookings`,
+        method: "DELETE",
+        body: { id },
+      }),
+      invalidatesTags: (result, error, arg) => [
+        { type: "Booking", id: arg.id },
+      ],
+    }),
   }),
 });
 
-export const { useGetBookingsQuery } = bookingsApiSlice;
+export const {
+  useGetBookingsQuery,
+  useAddNewBookingMutation,
+  useUpdateBookingMutation,
+  useDeleteBookingMutation,
+} = bookingsApiSlice;
 
 // returns the query result object
 export const selectBookingsResult =

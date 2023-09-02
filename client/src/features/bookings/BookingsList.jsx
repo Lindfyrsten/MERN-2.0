@@ -10,7 +10,11 @@ const BookingsList = () => {
     isSuccess,
     isError,
     error,
-  } = useGetBookingsQuery();
+  } = useGetBookingsQuery(undefined, {
+    pollingInterval: 15000,
+    refetchOnFocus: true,
+    refetchOnMountOrArgChange: true,
+  });
 
   let content;
 
