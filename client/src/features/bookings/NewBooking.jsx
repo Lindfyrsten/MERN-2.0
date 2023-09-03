@@ -1,5 +1,14 @@
-import React from "react";
+import { useSelector } from "react-redux";
+import { selectAllBookings } from "./BookingsApiSlice";
+import NewBookingForm from "./NewBookingForm";
 
 export default function NewBooking() {
-  return <div>NewBooking</div>;
+  const bookings = useSelector(selectAllBookings);
+
+  const content = bookings ? (
+    <NewBookingForm bookings={bookings} />
+  ) : (
+    <div>Loading...</div>
+  );
+  return content;
 }

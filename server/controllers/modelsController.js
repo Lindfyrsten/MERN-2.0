@@ -44,8 +44,8 @@ const createNewModel = asyncHandler(async (req, res) => {
 // @route   PATCH /users
 // @access  Private/Admin
 const updateModel = asyncHandler(async (req, res) => {
-  const { id, name, price, bookings } = req.body;
-  if (!id || !name || typeof price !== "number" || !Array.isArray(bookings)) {
+  const { id, name, price } = req.body;
+  if (!id || !name || typeof price !== "number") {
     return res.status(400).json({ message: "All fields are required" });
   }
 
@@ -62,7 +62,6 @@ const updateModel = asyncHandler(async (req, res) => {
 
   model.name = name;
   model.price = price;
-  model.bookings = bookings;
 
   const updatedModel = await model.save();
   res.json({ message: `${updatedModel.name} updated` });

@@ -2,7 +2,6 @@ import User from "../models/User.js";
 import Booking from "../models/Booking.js";
 import Model from "../models/Model.js";
 import asyncHandler from "express-async-handler";
-import bcrypt from "bcrypt";
 
 // @desc    Get all bookings
 // @route   GET /bookings
@@ -81,7 +80,14 @@ const createNewBooking = asyncHandler(async (req, res) => {
 // @route   PATCH /bookings
 // @access  Private/Admin/Model
 const updateBooking = asyncHandler(async (req, res) => {
-  const { id, user, models, totalprice, text, completed } = req.body;
+  const {
+    id,
+    user,
+    modelsList: models,
+    totalprice,
+    text,
+    completed,
+  } = req.body;
   if (
     !id ||
     !user ||
@@ -98,6 +104,8 @@ const updateBooking = asyncHandler(async (req, res) => {
   if (!booking) {
     return res.status(400).json({ message: "Booking not found" });
   }
+
+  // TODO: if user or models are different, remove booking from old values and and them to the new
 
   booking.user = user;
   booking.models = models;

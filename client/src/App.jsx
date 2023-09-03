@@ -13,6 +13,8 @@ import NewUserForm from "./features/users/NewUserForm";
 import EditBooking from "./features/bookings/EditBooking";
 import NewBooking from "./features/bookings/NewBooking";
 import Prefetch from "./features/auth/Prefetch";
+import NewModelForm from "./features/models/NewModelForm";
+import EditModel from "./features/models/EditModel";
 
 function App() {
   return (
@@ -35,6 +37,8 @@ function App() {
             </Route>
             <Route path="models">
               <Route index element={<ModelsList />} />
+              <Route path=":id" element={<EditModel />} />
+              <Route path="new" element={<NewModelForm />} />
             </Route>
           </Route>
           {/* End Dash */}

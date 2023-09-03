@@ -84,7 +84,7 @@ const selectBookingsData = createSelector(
 
 //getSelectors creates these selectors and we rename them with aliases using destructuring
 export const {
-  selectAll: selectAllbookings,
+  selectAll: selectAllBookings,
   selectById: selectBookingById,
   selectIds: selectBookingIds,
   // Pass in a selector that returns the bookings slice of state

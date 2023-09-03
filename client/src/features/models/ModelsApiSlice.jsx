@@ -4,10 +4,6 @@ import { apiSlice } from "../../app/api/apiSlice";
 const modelsAdapter = createEntityAdapter({});
 const initialState = modelsAdapter.getInitialState({});
 
-export default function ModelsList() {
-  return <h1>ModelsList</h1>;
-}
-
 export const modelsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getModels: builder.query({
