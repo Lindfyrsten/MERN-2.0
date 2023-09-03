@@ -46,7 +46,7 @@ const createNewBooking = asyncHandler(async (req, res) => {
   }
 
   // look for user
-  const userFound = await User.findById(user).lean().exec();
+  const userFound = await User.findById(user);
   if (!userFound) {
     return res.status(400).json({ message: "User not found" });
   }
@@ -62,6 +62,9 @@ const createNewBooking = asyncHandler(async (req, res) => {
   // create and store new booking
   const booking = await Booking.create(bookingObject);
 
+  // add booking to user
+  userFound.bookings.push(booking._id);
+  await userFound.save();
   // add booking to models
   modelsFound.forEach(async (model) => {
     model.bookings.push(booking._id);
@@ -122,9 +125,16 @@ const deleteBooking = asyncHandler(async (req, res) => {
   if (!booking) {
     return res.status(400).json({ message: "Booking not found" });
   }
-  const modelsFound = await Model.find({ _id: { $in: booking.models } });
+
+  // remove booking from user
+  const userFound = await User.findById(booking.user).exec();
+  userFound.bookings = userFound.bookings.filter(
+    (bookingId) => bookingId.toString() !== booking._id.toString()
+  );
+  await userFound.save();
 
   // remove booking from models
+  const modelsFound = await Model.find({ _id: { $in: booking.models } });
   modelsFound.forEach(async (model) => {
     model.bookings = model.bookings.filter(
       (bookingId) => bookingId.toString() !== booking._id.toString()
