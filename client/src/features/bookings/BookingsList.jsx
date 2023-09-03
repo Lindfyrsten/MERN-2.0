@@ -34,7 +34,7 @@ const BookingsList = () => {
       : null;
 
     content = (
-      <table className="table table-bookings">
+      <table className="table table--bookings">
         <thead className="table__thead">
           <tr>
             <th scope="col" className="table__th booking__status">

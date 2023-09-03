@@ -22,7 +22,7 @@ const getAllBookings = asyncHandler(async (req, res) => {
       const user = await User.findById(booking.user).lean().exec();
       const models = await Model.find({ _id: { $in: booking.models } });
       const modelNames = models.map((model) => model.name);
-      return { ...booking, username: user.username, models: modelNames };
+      return { ...booking, username: user.username, modelnames: modelNames };
     })
   );
   res.json(bookingsWithUser);
@@ -52,9 +52,7 @@ const createNewBooking = asyncHandler(async (req, res) => {
   }
 
   // look for models
-  const modelsFound = await Model.find({ _id: { $in: models } })
-    .lean()
-    .exec();
+  const modelsFound = await Model.find({ _id: { $in: models } }).exec();
   if (!modelsFound?.length) {
     return res.status(400).json({ message: "Models not found" });
   }
@@ -63,6 +61,12 @@ const createNewBooking = asyncHandler(async (req, res) => {
 
   // create and store new booking
   const booking = await Booking.create(bookingObject);
+
+  // add booking to models
+  modelsFound.forEach(async (model) => {
+    model.bookings.push(booking._id);
+    await model.save();
+  });
   if (booking) {
     res.status(201).json({ message: "New booking created" });
   } else {
@@ -118,6 +122,15 @@ const deleteBooking = asyncHandler(async (req, res) => {
   if (!booking) {
     return res.status(400).json({ message: "Booking not found" });
   }
+  const modelsFound = await Model.find({ _id: { $in: booking.models } });
+
+  // remove booking from models
+  modelsFound.forEach(async (model) => {
+    model.bookings = model.bookings.filter(
+      (bookingId) => bookingId.toString() !== booking._id.toString()
+    );
+    await model.save();
+  });
   const deletedBooking = await booking.deleteOne();
   const reply = `Booking ${deletedBooking._id} deleted`;
   res.json(reply);

@@ -21,7 +21,7 @@ export default function Booking({ bookingId }) {
       day: "numeric",
       month: "long",
     });
-    const modelsString = booking.models.toString().replaceAll(",", ", ");
+    const modelsString = booking.modelnames.toString().replaceAll(",", ", ");
     const handleEdit = () => navigate(`/dash/bookings/${bookingId}`);
     return (
       <tr className="table__row">

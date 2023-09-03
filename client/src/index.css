@@ -201,8 +201,12 @@ tr {
   gap: 0.1em;
 }
 
-.table-bookings {
+.table--bookings {
   grid-template-columns: repeat(7, 1fr) 50px;
+}
+
+.table--models {
+  grid-template-columns: repeat(3, 1fr) 50px;
 }
 
 .table__button {
