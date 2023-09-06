@@ -11,7 +11,7 @@ import ModelsList from "./features/models/ModelsList";
 import EditUser from "./features/users/EditUser";
 import NewUserForm from "./features/users/NewUserForm";
 import EditBooking from "./features/bookings/EditBooking";
-import NewBooking from "./features/bookings/NewBooking";
+import NewBookingForm from "./features/bookings/NewBookingForm";
 import Prefetch from "./features/auth/Prefetch";
 import NewModelForm from "./features/models/NewModelForm";
 import EditModel from "./features/models/EditModel";
@@ -33,7 +33,7 @@ function App() {
             <Route path="bookings">
               <Route index element={<BookingsList />} />
               <Route path=":id" element={<EditBooking />} />
-              <Route path="new" element={<NewBooking />} />
+              <Route path="new" element={<NewBookingForm />} />
             </Route>
             <Route path="models">
               <Route index element={<ModelsList />} />

@@ -23,7 +23,7 @@ export default function EditBookingForm({ booking, users, models }) {
   const [totalprice, setTotalprice] = useState(booking.totalprice);
   const [validPrice, setValidPrice] = useState(true);
   const [completed, setCompleted] = useState(booking.completed);
-  const [text, setText] = useState(booking.text);
+  const [note, setNote] = useState(booking.note);
 
   useEffect(() => {
     setValidPrice(totalprice >= 0);
@@ -45,10 +45,7 @@ export default function EditBookingForm({ booking, users, models }) {
     setTotalprice(totalprice);
   };
 
-  const onUserChanged = (e) => {
-    console.log(e.target.value);
-    setUser(e.target.value);
-  };
+  const onUserChanged = (e) => setUser(e.target.value);
 
   const onModelsChanged = (e) => {
     const values = Array.from(
@@ -59,7 +56,7 @@ export default function EditBookingForm({ booking, users, models }) {
   };
   const onCompletedChanged = () => setCompleted((prev) => !prev);
 
-  const onTextChanged = (e) => setText(e.target.value);
+  const onNoteChanged = (e) => setNote(e.target.value);
 
   const onSaveBookingClicked = async (e) => {
     await updateBooking({
@@ -67,7 +64,7 @@ export default function EditBookingForm({ booking, users, models }) {
       user,
       modelsList,
       totalprice,
-      text,
+      note,
       completed,
     });
   };
@@ -174,17 +171,17 @@ export default function EditBookingForm({ booking, users, models }) {
           onChange={onTotalpriceChanged}
         />
 
-        <label className="form__label" htmlFor="text">
+        <label className="form__label" htmlFor="note">
           Booking Note:
         </label>
         <input
           className={`form__input`}
-          id="text"
-          name="text"
-          type="text"
+          id="note"
+          name="note"
+          type="note"
           autoComplete="off"
-          value={text}
-          onChange={onTextChanged}
+          value={note}
+          onChange={onNoteChanged}
         />
 
         <label

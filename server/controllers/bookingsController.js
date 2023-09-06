@@ -31,14 +31,13 @@ const getAllBookings = asyncHandler(async (req, res) => {
 // @route   POST /bookings
 // @access  Private/Admin/Model
 const createNewBooking = asyncHandler(async (req, res) => {
-  const { user, models, totalprice, text } = req.body;
+  const { user, modelsList: models, totalprice, note } = req.body;
 
   // confirm data
   if (
     !user ||
     !Array.isArray(models) ||
     !models.length ||
-    !text ||
     typeof totalprice !== "number"
   ) {
     return res.status(400).json({ message: "All fields are required" });
@@ -56,7 +55,7 @@ const createNewBooking = asyncHandler(async (req, res) => {
     return res.status(400).json({ message: "Models not found" });
   }
 
-  const bookingObject = { user, models, totalprice, text };
+  const bookingObject = { user, models, totalprice, note };
 
   // create and store new booking
   const booking = await Booking.create(bookingObject);
@@ -85,7 +84,7 @@ const updateBooking = asyncHandler(async (req, res) => {
     user,
     modelsList: models,
     totalprice,
-    text,
+    note,
     completed,
   } = req.body;
   if (
@@ -93,7 +92,6 @@ const updateBooking = asyncHandler(async (req, res) => {
     !user ||
     !Array.isArray(models) ||
     !models.length ||
-    !text ||
     typeof totalprice !== "number" ||
     typeof completed !== "boolean"
   ) {
@@ -109,7 +107,7 @@ const updateBooking = asyncHandler(async (req, res) => {
 
   booking.user = user;
   booking.models = models;
-  booking.text = text;
+  booking.note = note;
   booking.totalprice = totalprice;
   booking.completed = completed;
 

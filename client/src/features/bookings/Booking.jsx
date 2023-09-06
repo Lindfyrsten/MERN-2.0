@@ -35,7 +35,7 @@ export default function Booking({ bookingId }) {
         <td className="table__cell booking__username">{booking.username}</td>
         <td className="table__cell booking__username">{modelsString}</td>
         <td className="table__cell booking__username">{booking.totalprice}</td>
-        <td className="table__cell booking__title">{booking.text}</td>
+        <td className="table__cell booking__title">{booking.note}</td>
         <td className="table__cell booking__created">{created}</td>
         <td className="table__cell booking__updated">{updated}</td>
         <td className="table__cell">
