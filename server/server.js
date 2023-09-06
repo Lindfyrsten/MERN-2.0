@@ -12,6 +12,7 @@ import mongoose from "mongoose";
 import userRoutes from "./routes/userRoutes.js";
 import bookingRoutes from "./routes/bookingRoutes.js";
 import modelRoutes from "./routes/modelRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 
 dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
@@ -29,6 +30,7 @@ app.use("/", express.static(path.join(__dirname, "public")));
 app.use("/", root);
 
 app.use("/users", userRoutes);
+app.use("/auth", authRoutes);
 app.use("/bookings", bookingRoutes);
 app.use("/models", modelRoutes);
 

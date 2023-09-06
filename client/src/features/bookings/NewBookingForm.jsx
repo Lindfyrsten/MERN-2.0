@@ -1,15 +1,10 @@
 import { useState, useEffect } from "react";
 import { useAddNewBookingMutation } from "./BookingsApiSlice";
-import { selectAllUsers } from "../users/UsersApiSlice";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSave } from "@fortawesome/free-solid-svg-icons";
-import { useSelector } from "react-redux";
-import { selectAllModels } from "../models/ModelsApiSlice";
 
-export default function NewBookingForm() {
-  const users = useSelector(selectAllUsers);
-  const models = useSelector(selectAllModels);
+export default function NewBookingForm({ users }, { models }) {
   const [addNewBooking, { isLoading, isSuccess, isError, error }] =
     useAddNewBookingMutation();
 

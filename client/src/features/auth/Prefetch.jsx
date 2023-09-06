@@ -9,7 +9,6 @@ import { modelsApiSlice } from "../models/ModelsApiSlice";
 
 export default function Prefetch() {
   useEffect(() => {
-    console.log("subscribing");
     const bookings = store.dispatch(
       bookingsApiSlice.endpoints.getBookings.initiate()
     );
@@ -19,7 +18,6 @@ export default function Prefetch() {
     );
 
     return () => {
-      console.log("unsubscribing");
       bookings.unsubscribe();
       users.unsubscribe();
       models.unsubscribe();
